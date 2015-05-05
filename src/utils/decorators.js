@@ -56,3 +56,10 @@ export function bind(...actionIds) {
 export function expose(obj, name, description) {
   return addMeta(description, { publicMethod: true })
 }
+
+export function datasource(source) {
+  return function (Store) {
+    Store.config = assign({ datasource: source }, Store.config)
+    return Store
+  }
+}
