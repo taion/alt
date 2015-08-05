@@ -29,6 +29,7 @@ function renderWithStrategy(
   const futures = []
   const continuations = []
   const actions = []
+  alt.renderOptions = info
   alt.buffer = {futures, continuations, actions}
 
   const html = renderFunc(Element)
@@ -39,6 +40,7 @@ function renderWithStrategy(
   }
 
   alt.buffer = null
+  alt.renderOptions = null
   const state = alt.flush()
 
   if (futures.length) {
