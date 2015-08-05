@@ -42,9 +42,13 @@ export default function makeAction(alt, namespace, name, implementation, obj) {
     return result
   }
   action.defer = (...args) => {
-    setTimeout(() => {
-      newAction._dispatch.apply(null, args)
-    })
+    if (alt.buffer) {
+      alt.buffer.actions.push({newAction, args})
+    } else {
+      setTimeout(() => {
+        newAction._dispatch.apply(null, args)
+      })
+    }
   }
   action.id = id
   action.data = data

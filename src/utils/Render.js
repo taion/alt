@@ -28,9 +28,15 @@ function renderWithStrategy(
 
   const futures = []
   const continuations = []
-  alt.buffer = {futures, continuations}
+  const actions = []
+  alt.buffer = {futures, continuations, actions}
 
   const html = renderFunc(Element)
+
+  while (actions.length > 0) {
+    const a = actions.shift()
+    a.newAction._dispatch.apply(null, a.args)
+  }
 
   alt.buffer = null
   const state = alt.flush()
