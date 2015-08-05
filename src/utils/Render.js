@@ -21,7 +21,7 @@ function renderWithStrategy(
       if (succeeded) {
         continuation.onSuccess(result)
       } else {
-        continuation.onError(result)
+        continuation.onFailure(result)
       }
     })
   }

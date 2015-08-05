@@ -1,4 +1,5 @@
 import Iso from 'iso'
+import React from 'react'
 import Render from './Render'
 
 export default {
@@ -26,7 +27,7 @@ export default {
     } else {
       Iso.bootstrap((state, meta, node) => {
         alt.bootstrap(state)
-        new Render(alt).toDOM(Component, props, node, meta)
+        React.render(Component, node)
       })
       return Promise.resolve()
     }
