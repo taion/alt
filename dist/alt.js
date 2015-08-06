@@ -363,6 +363,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function getStore(name) {
 	      return this.stores[name];
 	    }
+	  }, {
+	    key: 'fetch',
+	    value: function fetch(future, onSuccess, onFailure) {
+	      if (!this.buffer) {
+	        future.then(onSuccess, onFailure);
+	      } else {
+	        this.buffer.futures.push(future.then(function (x) {
+	          return [true, x];
+	        }, function (e) {
+	          return [false, e];
+	        }));
+	        this.buffer.continuations.push({ onSuccess: onSuccess, onFailure: onFailure });
+	      }
+	    }
 	  }], [{
 	    key: 'debug',
 	    value: function debug(name, alt) {
@@ -445,6 +459,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  proto.actionListeners = {};
 	  proto.publicMethods = {};
 	  proto.handlesOwnErrors = false;
+
+	  // This doesn't need to be serialized - the data will be enough
+	  proto.pendingFetches = {};
 
 	  return fn.assign(proto, _StoreMixin2['default'], {
 	    displayName: key,
@@ -703,6 +720,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.displayName = model.displayName;
 	    this.boundListeners = model.boundListeners;
 	    this.StoreModel = StoreModel;
+	    this.reduce = model.reduce || function (x) {
+	      return x;
+	    };
 
 	    var output = model.output || function (x) {
 	      return x;
@@ -1519,9 +1539,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    setTimeout(function () {
-	      newAction._dispatch.apply(null, args);
-	    });
+	    if (alt.buffer) {
+	      alt.buffer.actions.push({ newAction: newAction, args: args });
+	    } else {
+	      setTimeout(function () {
+	        newAction._dispatch.apply(null, args);
+	      });
+	    }
 	  };
 	  action.id = id;
 	  action.data = data;
