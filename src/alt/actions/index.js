@@ -31,7 +31,8 @@ export default function makeAction(alt, namespace, name, implementation, obj) {
   const action = (...args) => {
     newAction.dispatched = false
     const result = newAction._dispatch(...args)
-    if (!newAction.dispatched && result !== undefined) {
+    // async functions that return promises should not be dispatched
+    if (!newAction.dispatched && result !== undefined && !fn.isPromise(result)) {
       if (fn.isFunction(result)) {
         result(dispatch)
       } else {
@@ -41,9 +42,13 @@ export default function makeAction(alt, namespace, name, implementation, obj) {
     return result
   }
   action.defer = (...args) => {
-    setTimeout(() => {
-      newAction._dispatch.apply(null, args)
-    })
+    if (alt.buffer) {
+      alt.buffer.actions.push({newAction, args})
+    } else {
+      setTimeout(() => {
+        newAction._dispatch.apply(null, args)
+      })
+    }
   }
   action.id = id
   action.data = data

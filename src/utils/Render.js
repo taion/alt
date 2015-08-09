@@ -21,18 +21,26 @@ function renderWithStrategy(
       if (succeeded) {
         continuation.onSuccess(result)
       } else {
-        continuation.onError(result)
+        continuation.onFailure(result)
       }
     })
   }
 
   const futures = []
   const continuations = []
-  alt.buffer = {futures, continuations}
+  const actions = []
+  alt.renderOptions = info
+  alt.buffer = {futures, continuations, actions}
 
   const html = renderFunc(Element)
 
+  while (actions.length > 0) {
+    const a = actions.shift()
+    a.newAction._dispatch.apply(null, a.args)
+  }
+
   alt.buffer = null
+  alt.renderOptions = null
   const state = alt.flush()
 
   if (futures.length) {

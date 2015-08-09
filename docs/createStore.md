@@ -7,9 +7,9 @@ permalink: /docs/createStore/
 
 # createStore
 
-> (StoreModel: function, iden: ?string, saveStore = true: boolean, ...constructorArgs): [AltStore](stores.md)
+> (StoreModel: function, iden: ?string, ...constructorArgs): [AltStore](stores.md)
 
-This is a function that takes in a class of your store and returns back the singleton store. The second parameter `iden` is a string that is used as a unique identifier for serializing/deserializing your store. The name of the store comes from the class name but on production due to heavy minification it is a good idea to provide your own name to avoid collisions. The third parameter `saveStore` is to tell alt whether to save a reference to the store for later when using [bootstrap](bootstrap.md) or [snapshots](takeSnapshot.md). `constructorArgs` are passed to the `StoreModel` constructor (if `StoreModel` is a class).
+This is a function that takes in a class of your store and returns back the singleton store. The second parameter `iden` is a string that is used as a unique identifier for serializing/deserializing your store. The name of the store comes from the class name but on production due to heavy minification it is a good idea to provide your own name to avoid collisions. `constructorArgs` are passed to the `StoreModel` constructor (if `StoreModel` is a class).
 
 # StoreModel
 
@@ -295,6 +295,22 @@ This is a reference to the store's internal name. This is either the identifier 
 > otherwise(data, action)
 
 This is a method you can implement in your store in order to receive all dispatches that are not currently being handled in your store explicitly via bindActions, bindAction, or bindListeners. This is similar to guards matching in Haskell.
+
+## StoreModel#output
+
+> output(state): {}
+
+A method you can use to control the output of what gets sent down to `listen()` as "state".
+
+```js
+output(state) {
+  return { foo: 'bar' }
+}
+
+store.listen((state) => {
+  state.foo === 'bar'
+})
+```
 
 ## StoreModel#reduce
 

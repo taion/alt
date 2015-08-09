@@ -1,0 +1,169 @@
+import React from 'react'
+
+function renderWithStrategy(
+  alt,
+  renderFunc,
+  Element,
+  info,
+  start = Date.now(),
+  iterations = 0,
+  lastResults = null
+) {
+  // FIXME: Add error handling here.
+
+  if (lastResults) {
+    alt.bootstrap(lastResults.state)
+
+    lastResults.futureResults.forEach((futureResult, i) => {
+      const [succeeded, result] = futureResult
+      const continuation = lastResults.continuations[i]
+
+      if (succeeded) {
+        continuation.onSuccess(result)
+      } else {
+        continuation.onError(result)
+      }
+    })
+  }
+
+<<<<<<< HEAD
+  // works as a decorator or as a function
+  return MaybeComponent ? bind(MaybeComponent) : Component => bind(Component)
+}
+
+function usingDispatchBuffer(buffer, Component) {
+  return React.createClass({
+    childContextTypes: {
+      buffer: React.PropTypes.object.isRequired
+    },
+
+    getChildContext() {
+      return { buffer }
+    },
+
+    render() {
+      return React.createElement(Component, this.props)
+    }
+  })
+}
+
+class DispatchBuffer {
+  constructor(renderStrategy) {
+    this.promisesBuffer = []
+    this.locked = false
+    this.renderStrategy = renderStrategy
+  }
+
+  push(v) {
+    this.promisesBuffer.push(v)
+  }
+
+  fill(Element) {
+    return this.renderStrategy(Element)
+  }
+
+  clear() {
+    this.promisesBuffer = []
+  }
+
+  flush(alt, Element) {
+    return Promise.all(this.promisesBuffer).then((data) => {
+      // fire off all the actions synchronously
+      data.forEach((f) => {
+        if (Array.isArray(f)) {
+          f.forEach(x => x())
+        } else {
+          f()
+        }
+      })
+      this.locked = true
+
+      return {
+        html: this.renderStrategy(Element),
+        state: alt.flush(),
+        element: Element
+      }
+    }).catch((err) => {
+      return Promise.reject({
+        err,
+        state: alt.flush(),
+        element: Element
+      })
+=======
+  const futures = []
+  const continuations = []
+  alt.buffer = {futures, continuations}
+
+  const html = renderFunc(Element)
+
+  alt.buffer = null
+  const state = alt.flush()
+
+  if (futures.length) {
+    return Promise.all(futures).then(futureResults => renderWithStrategy(
+      alt,
+      renderFunc,
+      Element,
+      info,
+      start,
+      iterations + 1,
+      {state, futureResults, continuations}
+    ))
+  } else {
+    const time = Date.now() - start
+
+    return Promise.resolve({
+      html, state,
+      diagnostics: {iterations, time}
+>>>>>>> 4ebd6aaf882b9e499e1b4d9096c6cb5e36ec4338
+    })
+  }
+}
+
+export default class Render {
+  constructor(alt, options = {}) {
+    this.alt = alt
+    this.options = options
+
+<<<<<<< HEAD
+function renderWithStrategy(strategy) {
+  return (alt, Component, props) => {
+    alt.trapAsync = true
+
+    // create a buffer and use context to pass it through to the components
+    const buffer = new DispatchBuffer((Node) => {
+      return React[strategy](Node)
+    })
+    const Container = usingDispatchBuffer(buffer, Component)
+
+    // cache the element
+    const Element = React.createElement(Container, props)
+
+    // render so we kick things off and get the props
+    buffer.fill(Element)
+=======
+    // defaults
+    // 500ms or 5 iteration max
+    this.options.timeout = options.timeout || 500
+    this.options.maxIterations = options.maxIterations || 5
+  }
+>>>>>>> 4ebd6aaf882b9e499e1b4d9096c6cb5e36ec4338
+
+  toString(Element) {
+    return renderWithStrategy(
+      this.alt,
+      React.renderToString,
+      Element,
+      this.options
+    )
+  }
+
+  toStaticMarkup(Element) {
+    return renderWithStrategy(
+      this.alt,
+      React.renderToStaticMarkup,
+      Element,
+      this.options
+    )
+  }
+}

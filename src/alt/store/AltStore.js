@@ -14,6 +14,7 @@ class AltStore {
     this.displayName = model.displayName
     this.boundListeners = model.boundListeners
     this.StoreModel = StoreModel
+    this.reduce = model.reduce || (x => x)
 
     const output = model.output || (x => x)
 
@@ -81,7 +82,6 @@ class AltStore {
   }
 
   unlisten(cb) {
-    if (!cb) throw new TypeError('Unlisten must receive a function')
     this.lifecycle('unlisten')
     this.transmitter.unsubscribe(cb)
   }

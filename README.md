@@ -1,8 +1,8 @@
 # alt
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/goatslacker/alt?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Check out the [API Reference](http://alt.js.org/docs/) for full in-depth docs. For a high-level walk-through on flux, take a look at the [Getting Started](http://alt.js.org/guide/) guide. What follows below applies only to the master branch of `alt` and not the latest distribution. Any questions? ask in the gitter room.
 
-> To alter. Altered; Changed.
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/goatslacker/alt?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![NPM version](https://badge.fury.io/js/alt.svg)](http://badge.fury.io/js/alt)
 [![Build Status](https://secure.travis-ci.org/goatslacker/alt.svg?branch=master)](http://travis-ci.org/goatslacker/alt)
@@ -114,12 +114,14 @@ class TodoView extends Component {
 * [React Router Example](https://github.com/lostpebble/alt-react-router-example)
 * [React Router Loopback](https://github.com/bkniffler/react-router-alt-loopback)
 * [React Webpack Rails Example](https://github.com/justin808/react-webpack-rails-tutorial)
+* [React Webpack Altjs Example](https://underthehood.myob.com/changing-of-the-guard-in-web-technologies/)
 * [React Weather](https://github.com/sapegin/react-weather)
 * [Shopping Cart](https://github.com/voronianski/flux-comparison/tree/master/alt)
 * [Todo](https://github.com/benstokoe/alt-todo)
 * [Typeahead](https://github.com/timtyrrell/alt-typeahead)
 * [Isomorphic React Examples](https://github.com/goatslacker/isomorphic-react-examples)
 * [Typescript Project](https://github.com/Shearerbeard/alt-typescript-tutorial)
+* [Why did Social Tables choose Alt?](https://medium.com/social-tables-tech/we-compared-13-top-flux-implementations-you-won-t-believe-who-came-out-on-top-1063db32fe73)
 
 ### Boilerplates
 
@@ -159,8 +161,6 @@ There are also many [utils](/src/utils) available which interface well with alt:
 * [TimeTravel](/src/utils/TimeTravel.js) enhances your stores so they are able to travel through different states in time.
 
 ## Topical Guide
-
-Check out the [API Reference](http://alt.js.org/docs/) for full in-depth docs. For a high-level walk-through on flux, take a look at the [Getting Started](http://alt.js.org/guide/) guide.
 
 First we install alt through npm. Although alt is also available through bower.
 

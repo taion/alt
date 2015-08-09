@@ -4,6 +4,7 @@
     "browser": true,
     "es6": true
   },
+  "parser": "babel-eslint",
   "ecmaFeatures": {
     "modules": true,
     "jsx": true
@@ -26,7 +27,7 @@
     }],
     "no-use-before-define": 2,
     // possible errors
-    "comma-dangle": [2, "never"],
+    "comma-dangle": [0, "always"],
     "no-cond-assign": [2, "always"],
     "no-debugger": 1,
     "no-alert": 1,
@@ -149,7 +150,7 @@
     "no-else-return": 0,
     "no-inline-comments": 2,
     "no-lonely-if": 2,
-    "no-mixed-spaces-and-tabs": [2, "always"],
+    "no-mixed-spaces-and-tabs": 2,
     "no-multiple-empty-lines": [1, {
       "max": 2
     }],
@@ -176,7 +177,7 @@
         "nonwords": false
       }
     ],
-    "wrap-regex": [2, "never"],
+    "wrap-regex": 2,
 
     /* react rules */
     "react/jsx-uses-vars": 1

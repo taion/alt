@@ -17,14 +17,22 @@ class Alt {
     this.actions = { global: {} }
     this.stores = {}
     this.storeTransforms = config.storeTransforms || []
-    this.buffer = false
+    this.trapAsync = false
     this._actionsRegistry = {}
     this._initSnapshot = {}
     this._lastSnapshot = {}
   }
 
   dispatch(action, data, details) {
-    this.batchingFunction(() => this.dispatcher.dispatch({ action, data, details }))
+    this.batchingFunction(() => {
+      const id = Math.random().toString(18).substr(2, 16)
+      return this.dispatcher.dispatch({
+        id,
+        action,
+        data,
+        details
+      })
+    })
   }
 
   createUnsavedStore(StoreModel, ...args) {
